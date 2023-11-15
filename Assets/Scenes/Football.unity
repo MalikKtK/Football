@@ -2194,7 +2194,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1207951427385840860, guid: 428f9a2f6fc2f2b40b43d850d272ddbf, type: 3}
       propertyPath: fixedYPosition
-      value: -1.081818
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1269095530584141080, guid: 428f9a2f6fc2f2b40b43d850d272ddbf, type: 3}
       propertyPath: m_Layer
