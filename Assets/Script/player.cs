@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public Transform rotationPoint;
 
     // Define the fixed y-position you want your character to stay at.
-    public float fixedYPosition = 2.0f;
+    public float fixedYPosition = 20.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -146,9 +146,9 @@ public class Player : MonoBehaviour
     void LateUpdate()
     {
         // Keep the y-coordinate fixed at a specific value
-        Vector3 newPosition = transform.position;
-        newPosition.y = fixedYPosition; // Use your desired fixed y-position here
-        transform.position = newPosition;
+        Vector3 newPosition = movingPoint.transform.position;
+        //newPosition.y = fixedYPosition; // Use your desired fixed y-position here
+        movingPoint.transform.position = newPosition;
     }
 
     public void Die()
