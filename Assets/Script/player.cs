@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
     {
         // Keep the y-coordinate fixed at a specific value
         Vector3 newPosition = movingPoint.transform.position;
-        //newPosition.y = fixedYPosition; // Use your desired fixed y-position here
+        newPosition.y = fixedYPosition; // Use your desired fixed y-position here
         movingPoint.transform.position = newPosition;
     }
 
