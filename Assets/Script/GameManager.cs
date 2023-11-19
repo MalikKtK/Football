@@ -54,7 +54,6 @@ private void ResetPositions()
     {
         ball.transform.position = ballStartPosition;
         ball.transform.rotation = ballStartRotation;
-        // Reset any other necessary components, like Rigidbody velocity
         Rigidbody rb = ball.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -65,35 +64,47 @@ private void ResetPositions()
     }
 
     // Reset players
+    Debug.Log("Resetting players to their starting positions.");
     foreach (var player in players)
     {
-        Debug.Log("Resetting player: " + player.name + " from position: " + player.transform.position + " to startPosition: " + player.GetComponent<Player>().startPosition);
-        player.transform.position = player.GetComponent<Player>().startPosition;
-        player.transform.rotation = player.GetComponent<Player>().startRotation;
-        // Reset any other necessary components, like Rigidbody velocity
-        // Add Rigidbody reset if players have Rigidbody and use physics
+        var playerScript = player.GetComponent<Player>();
+        if (playerScript != null)
+        {
+            playerScript.ResetPosition();
+            Debug.Log($"Player {player.name} reset to startPosition: {playerScript.startPosition}");
+        }
+        else
+        {
+            Debug.Log($"Player script not found on {player.name}");
+        }
     }
 
     // Reset enemies
+    Debug.Log("Resetting enemies to their starting positions.");
     foreach (var enemy in enemies)
     {
-        Debug.Log("Resetting enemy: " + enemy.name + " from position: " + enemy.transform.position + " to startPosition: " + enemy.GetComponent<Enemy>().startPosition);
-        enemy.transform.position = enemy.GetComponent<Enemy>().startPosition;
-        enemy.transform.rotation = enemy.GetComponent<Enemy>().startRotation;
-        // Optionally reset any other components, like Rigidbody
-        Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
-        if (enemyRb != null)
+        var enemyScript = enemy.GetComponent<Enemy>();
+        if (enemyScript != null)
         {
-            enemyRb.velocity = Vector3.zero;
-            enemyRb.angularVelocity = Vector3.zero;
+            enemyScript.ResetPosition();
+            Debug.Log($"Enemy {enemy.name} reset to startPosition: {enemyScript.startPosition}");
+        }
+        else
+        {
+            Debug.Log($"Enemy script not found on {enemy.name}");
         }
     }
 }
 
+
     // Update is called once per frame
-    void Update()
+void Update()
+{
+    if (Input.GetKeyDown(KeyCode.R)) // Press 'R' to reset the player's position for testing
     {
-        Debug.Log("Score Team A: " + scoreTeamA);
-        Debug.Log("Score Team B: " + scoreTeamB);
+        ResetPositions();
     }
+
+    // Rest of your update logic...
+}
 }

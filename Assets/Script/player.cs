@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float respawnWaitTime = 2.0f;
-  public Vector3 startPosition { get; private set; }
+    public Vector3 startPosition { get; private set; }
     public Quaternion startRotation { get; private set; }
     public float maxSpeed = 4f;
     public float timeToMax = .26f;
@@ -17,23 +17,83 @@ public class Player : MonoBehaviour
     public float rotationSpeed = .1f;
 
     private Vector3 movement = Vector3.zero;
+    private bool canMove = true;
 
     public CharacterController movingPoint;
     public Transform rotationPoint;
 
-    // Define the fixed y-position you want your character to stay at.
     public float fixedYPosition = 20.0f;
 
-    // Start is called before the first frame update
+     public float speed = 5f; // Speed at which the player moves towards the ball
+    private Transform ballTransform;
+
     void Start()
     {
- startPosition = transform.position;
+        startPosition = transform.position;
         startRotation = transform.rotation;
+
+        // Find and store a reference to the ball's transform
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        if (ball != null)
+        {
+            ballTransform = ball.transform;
+        }
+    }
+
+    public void ResetPosition()
+    {
+        if (movingPoint != null)
+        {
+            movingPoint.enabled = false; // Disable CharacterController
+        }
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        if (movingPoint != null)
+        {
+            movingPoint.enabled = true; // Re-enable CharacterController
+        }
+
+        canMove = false; // Disable movement temporarily
+        StartCoroutine(EnableMovementAfterDelay(respawnWaitTime));
+    }
+
+    IEnumerator EnableMovementAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canMove = true; // Enable movement
     }
 
     // Update is called once per frame
+    
     void Update()
     {
+        if (!canMove) return; // Skip movement logic if canMove is false
+
+        // AI Movement towards the ball
+        if (ballTransform != null)
+        {
+            Vector3 direction = (ballTransform.position - transform.position).normalized;
+            direction.y = 0; // Keep y-axis movement to zero
+
+            // Move the player towards the ball using CharacterController
+            if (movingPoint != null)
+            {
+                movingPoint.Move(direction * speed * Time.deltaTime);
+            }
+
+            // Make the player face the ball
+            if (rotationPoint != null)
+            {
+                rotationPoint.rotation = Quaternion.Slerp(
+                    rotationPoint.rotation,
+                    Quaternion.LookRotation(direction),
+                    rotationSpeed
+                );
+            }
+        }
+
         // Up/Down (X-axis)
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
@@ -141,11 +201,11 @@ public class Player : MonoBehaviour
     }
 
     // LateUpdate is called once per frame after all Update functions have been called
-    void LateUpdate()
+   void LateUpdate()
     {
         // Keep the y-coordinate fixed at a specific value
         Vector3 newPosition = movingPoint.transform.position;
-        newPosition.y = fixedYPosition; // Use your desired fixed y-position here
+        newPosition.y = fixedYPosition;
         movingPoint.transform.position = newPosition;
     }
 }
