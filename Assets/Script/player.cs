@@ -4,10 +4,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float respawnWaitTime = 2.0f;
-    private Vector3 spawnPoint;
-    private Quaternion spawnRotation;
-    private bool dead = false;
-
+  public Vector3 startPosition { get; private set; }
+    public Quaternion startRotation { get; private set; }
     public float maxSpeed = 4f;
     public float timeToMax = .26f;
     private float GainPerSecond { get => maxSpeed / timeToMax; }
@@ -29,8 +27,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnPoint = movingPoint.transform.position;
-        spawnRotation = rotationPoint.rotation;
+ startPosition = transform.position;
+        startRotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -149,37 +147,5 @@ public class Player : MonoBehaviour
         Vector3 newPosition = movingPoint.transform.position;
         newPosition.y = fixedYPosition; // Use your desired fixed y-position here
         movingPoint.transform.position = newPosition;
-    }
-
-    public void Die()
-    {
-        if (!dead)
-        {
-            dead = true;
-            // Stop our movement
-            movement = Vector3.zero;
-            // Stop calling Update
-            enabled = false;
-            // Stop registering collisions
-            movingPoint.enabled = false;
-            // Stop drawing the model
-            rotationPoint.gameObject.SetActive(false);
-            // Prepare to wake us up again
-            Invoke(nameof(Respawn), respawnWaitTime);
-        }
-    }
-
-    public void Respawn()
-    {
-        dead = false;
-        // Set initial position and rotation
-        movingPoint.transform.position = spawnPoint;
-        rotationPoint.rotation = spawnRotation;
-        // Enable the update script again
-        enabled = true;
-        // Enable collision detection
-        movingPoint.enabled = true;
-        // Start drawing the model again
-        rotationPoint.gameObject.SetActive(true);
     }
 }

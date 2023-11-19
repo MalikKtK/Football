@@ -1155,11 +1155,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 0c126b0e37cd92a439ea88d4f3d07262, type: 3}
 --- !u!114 &1118875292
@@ -1200,11 +1200,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 0c126b0e37cd92a439ea88d4f3d07262, type: 3}
 --- !u!114 &1169963559
@@ -1743,11 +1743,11 @@ GameObject:
   - component: {fileID: 1915704033}
   - component: {fileID: 1915704032}
   - component: {fileID: 1915704031}
-  - component: {fileID: 1915704030}
   - component: {fileID: 1915704029}
+  - component: {fileID: 1915704035}
   m_Layer: 0
-  m_Name: enemy
-  m_TagString: Untagged
+  m_Name: Enemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1779,19 +1779,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1915704030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 8837882991676823978, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
-  m_PrefabInstance: {fileID: 6433219478794161207}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1915704028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696dfe7337eb16947bb3050a3a9dfd26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetObj: {fileID: 672587679}
 --- !u!65 &1915704031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1879,6 +1866,19 @@ Transform:
   - {fileID: 539480563}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1915704035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915704028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d324121b72c1c24aa93d607958a2e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!1001 &1920875418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1889,7 +1889,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1975457108487340, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
       propertyPath: m_Name
-      value: Soccer Ball
+      value: Ball
       objectReference: {fileID: 0}
     - target: {fileID: 1975457108487340, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
       propertyPath: m_Layer
@@ -2290,7 +2290,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1712928454873998071, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
       propertyPath: m_Name
-      value: enemy
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1712928454873998071, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5499188791894024536, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2333,10 +2337,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8837882991676823978, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837882991676823978, guid: d8ff344514d032d4c8a6b58e1c558d24, type: 3}
       propertyPath: targetObj
       value: 
       objectReference: {fileID: 672587679}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
