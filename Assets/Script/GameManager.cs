@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private Quaternion ballStartRotation;
     private GameObject[] players;
     private GameObject[] enemies;
+    private GameObject[] aiPlayers;
+
 
     void Start()
     {
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour
         // Store the initial positions and rotations of enemies
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // Assume 'Enemy' tag is used for all enemy objects
+
+            // Store the initial positions and rotations of AI players
+        aiPlayers = GameObject.FindGameObjectsWithTag("AIPlayer");
     }
 
       public void GoalScored(string scoringTeam)
@@ -92,6 +97,19 @@ private void ResetPositions()
         else
         {
             Debug.Log($"Enemy script not found on {enemy.name}");
+        }
+    }
+        // Reset AI players
+    foreach (var aiPlayer in aiPlayers)
+    {
+        var aiPlayerScript = aiPlayer.GetComponent<AIPlayer>();
+        if (aiPlayerScript != null)
+        {
+            aiPlayerScript.ResetPosition();
+        }
+        else
+        {
+            Debug.LogWarning($"AIPlayer script not found on {aiPlayer.name}");
         }
     }
 }

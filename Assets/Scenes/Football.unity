@@ -487,8 +487,8 @@ GameObject:
   - component: {fileID: 139540158}
   - component: {fileID: 139540157}
   m_Layer: 0
-  m_Name: Player (2)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -993,8 +993,8 @@ GameObject:
   - component: {fileID: 227456602}
   - component: {fileID: 227456601}
   m_Layer: 0
-  m_Name: Player (9)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1740,8 +1740,8 @@ GameObject:
   - component: {fileID: 504660393}
   - component: {fileID: 504660392}
   m_Layer: 0
-  m_Name: Player (4)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2485,8 +2485,8 @@ GameObject:
   m_Component:
   - component: {fileID: 693823038}
   m_Layer: 0
-  m_Name: Players
-  m_TagString: Player
+  m_Name: AIPlayers
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2657,8 +2657,8 @@ GameObject:
   - component: {fileID: 712512829}
   - component: {fileID: 712512828}
   m_Layer: 0
-  m_Name: Player (1)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3096,8 +3096,8 @@ GameObject:
   - component: {fileID: 781843414}
   - component: {fileID: 781843413}
   m_Layer: 0
-  m_Name: Player (3)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3516,6 +3516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a111207747baff147a05dc67d3381187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrabbed: 0
   initialSpeed: 5
 --- !u!1 &868503625
 GameObject:
@@ -5745,8 +5746,8 @@ GameObject:
   - component: {fileID: 1570118720}
   - component: {fileID: 1570118719}
   m_Layer: 0
-  m_Name: Player (8)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5893,8 +5894,8 @@ GameObject:
   - component: {fileID: 1589872066}
   - component: {fileID: 1589872065}
   m_Layer: 0
-  m_Name: Player (6)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6257,8 +6258,8 @@ GameObject:
   - component: {fileID: 1683305711}
   - component: {fileID: 1683305710}
   m_Layer: 0
-  m_Name: Player (7)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7074,8 +7075,8 @@ GameObject:
   - component: {fileID: 1789081224}
   - component: {fileID: 1789081223}
   m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8090,8 +8091,8 @@ GameObject:
   - component: {fileID: 2056665611}
   - component: {fileID: 2056665610}
   m_Layer: 0
-  m_Name: Player (5)
-  m_TagString: Player
+  m_Name: AIPlayer
+  m_TagString: AIPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

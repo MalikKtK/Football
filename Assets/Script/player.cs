@@ -27,24 +27,28 @@ public class Player : MonoBehaviour
      public float speed = 5f; // Speed at which the player moves towards the ball
     private Transform ballTransform;
 
+    private Ball ballScript;
+private bool hasBall = false;
+
     void Start()
     {
-        startPosition = transform.position;
-        startRotation = transform.rotation;
-
-        // Find and store a reference to the ball's transform
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         if (ball != null)
         {
+            ballScript = ball.GetComponent<Ball>();
             ballTransform = ball.transform;
         }
+
+        startPosition = transform.position;
+        startRotation = transform.rotation;
     }
+
 
     public void ResetPosition()
     {
         if (movingPoint != null)
         {
-            movingPoint.enabled = false; // Disable CharacterController
+            movingPoint.enabled = false;
         }
 
         transform.position = startPosition;
@@ -52,13 +56,12 @@ public class Player : MonoBehaviour
 
         if (movingPoint != null)
         {
-            movingPoint.enabled = true; // Re-enable CharacterController
+            movingPoint.enabled = true;
         }
 
-        canMove = false; // Disable movement temporarily
+        canMove = false;
         StartCoroutine(EnableMovementAfterDelay(respawnWaitTime));
     }
-
     IEnumerator EnableMovementAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -67,9 +70,9 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     
-    void Update()
+      void Update()
     {
-        if (!canMove) return; // Skip movement logic if canMove is false
+
 
         // AI Movement towards the ball
         if (ballTransform != null)
@@ -92,6 +95,17 @@ public class Player : MonoBehaviour
                     rotationSpeed
                 );
             }
+        }
+
+         if (Input.GetKeyDown(KeyCode.G)) // Use whatever key you want for grabbing the ball
+        {
+            TryGrabBall();
+        }
+
+        // Check for input to release the ball
+        if (Input.GetKeyDown(KeyCode.H) && hasBall) // Use whatever key you want for releasing the ball
+        {
+            ReleaseBall();
         }
 
         // Up/Down (X-axis)
@@ -199,13 +213,82 @@ public class Player : MonoBehaviour
             );
         }
     }
-
-    // LateUpdate is called once per frame after all Update functions have been called
-   void LateUpdate()
+private void AIMovement()
     {
-        // Keep the y-coordinate fixed at a specific value
+        if (ballTransform != null && !ballScript.isGrabbed)
+        {
+            Vector3 direction = (ballTransform.position - transform.position).normalized;
+            direction.y = 0;
+
+            if (movingPoint != null)
+            {
+                movingPoint.Move(direction * speed * Time.deltaTime);
+                movement = direction;
+            }
+        }
+    }
+
+    private void ManualMovement()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        if (movingPoint != null)
+        {
+            movingPoint.Move(direction * speed * Time.deltaTime);
+            movement = direction;
+        }
+    }
+
+    private void HandleBallInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            TryGrabBall();
+        }
+
+        if (Input.GetKeyDown(KeyCode.H) && hasBall)
+        {
+            ReleaseBall();
+        }
+    }
+
+    private void TryGrabBall()
+    {
+        if (ballScript != null && !ballScript.isGrabbed && Vector3.Distance(ballScript.transform.position, transform.position) <= 2.0f)
+        {
+            ballScript.Grab(this.transform);
+            hasBall = true;
+        }
+    }
+
+    private void ReleaseBall()
+    {
+        if (hasBall)
+        {
+            float throwForce = 10f;
+            ballScript.Release(this.transform.forward, throwForce);
+            hasBall = false;
+        }
+    }
+
+    private void UpdateRotation()
+    {
+        rotationPoint.rotation = Quaternion.Slerp(
+            rotationPoint.rotation,
+            Quaternion.LookRotation(movement),
+            rotationSpeed
+        );
+    }
+
+    void LateUpdate()
+    {
         Vector3 newPosition = movingPoint.transform.position;
         newPosition.y = fixedYPosition;
         movingPoint.transform.position = newPosition;
     }
 }
+
+
