@@ -24,13 +24,14 @@ public class Player : MonoBehaviour
 
     public float fixedYPosition = 20.0f;
 
-     public float speed = 5f; // Speed at which the player moves towards the ball
+     public float speed = 5f;
     private Transform ballTransform;
 
     private Ball ballScript;
 private bool hasBall = false;
 
-    void Start()
+        // Metode kaldt ved start af spillet.
+void Start()
     {
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         if (ball != null)
@@ -44,7 +45,8 @@ private bool hasBall = false;
     }
 
 
-    public void ResetPosition()
+       // Metode til at nulstille spillerens position.
+ public void ResetPosition()
     {
         if (movingPoint != null)
         {
@@ -65,28 +67,25 @@ private bool hasBall = false;
     IEnumerator EnableMovementAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        canMove = true; // Enable movement
+        canMove = true;
     }
 
-    // Update is called once per frame
     
-      void Update()
+         // Metode kaldt i hver opdateringsramme (frame).
+ void Update()
     {
 
 
-        // AI Movement towards the ball
         if (ballTransform != null)
         {
             Vector3 direction = (ballTransform.position - transform.position).normalized;
-            direction.y = 0; // Keep y-axis movement to zero
+            direction.y = 0;
 
-            // Move the player towards the ball using CharacterController
             if (movingPoint != null)
             {
                 movingPoint.Move(direction * speed * Time.deltaTime);
             }
-
-            // Make the player face the ball
+ 
             if (rotationPoint != null)
             {
                 rotationPoint.rotation = Quaternion.Slerp(
@@ -97,21 +96,18 @@ private bool hasBall = false;
             }
         }
 
-         if (Input.GetKeyDown(KeyCode.G)) // Use whatever key you want for grabbing the ball
+         if (Input.GetKeyDown(KeyCode.G))
         {
             TryGrabBall();
         }
 
-        // Check for input to release the ball
-        if (Input.GetKeyDown(KeyCode.H) && hasBall) // Use whatever key you want for releasing the ball
+        if (Input.GetKeyDown(KeyCode.H) && hasBall)
         {
             ReleaseBall();
         }
 
-        // Up/Down (X-axis)
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
-            // Up-slope Positive
             if (movement.x >= 0)
             {
                 movement.x += GainPerSecond * Time.deltaTime;
@@ -119,14 +115,12 @@ private bool hasBall = false;
             }
             else
             {
-                // Break-slope Negative
                 movement.x += GainPerSecond * reverseMomentum * Time.deltaTime;
                 if (movement.x > 0) movement.x = 0;
             }
         }
         else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            // Down-slope Negative
             if (movement.x <= 0)
             {
                 movement.x -= GainPerSecond * Time.deltaTime;
@@ -134,7 +128,6 @@ private bool hasBall = false;
             }
             else
             {
-                // Break-slope Positive
                 movement.x -= GainPerSecond * reverseMomentum * Time.deltaTime;
                 if (movement.x < 0) movement.x = 0;
             }
@@ -143,22 +136,18 @@ private bool hasBall = false;
         {
             if (movement.x > 0)
             {
-                // Fadeout from Positive
                 movement.x -= LossPerSecond * Time.deltaTime;
                 if (movement.x < 0) movement.x = 0;
             }
             else if (movement.x < 0)
             {
-                // Fadeout from Negative
                 movement.x += LossPerSecond * Time.deltaTime;
                 if (movement.x > 0) movement.x = 0;
             }
         }
 
-        // Left/Right (Y-axis)
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            // Up-slope Positive
             if (movement.z >= 0)
             {
                 movement.z += GainPerSecond * Time.deltaTime;
@@ -166,14 +155,12 @@ private bool hasBall = false;
             }
             else
             {
-                // Break-slope Negative
                 movement.z += GainPerSecond * reverseMomentum * Time.deltaTime;
                 if (movement.z > 0) movement.z = 0;
             }
         }
         else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            // Down-slope Negative
             if (movement.z <= 0)
             {
                 movement.z -= GainPerSecond * Time.deltaTime;
@@ -181,7 +168,6 @@ private bool hasBall = false;
             }
             else
             {
-                // Break-slope Positive
                 movement.z -= GainPerSecond * reverseMomentum * Time.deltaTime;
                 if (movement.z < 0) movement.z = 0;
             }
@@ -190,13 +176,11 @@ private bool hasBall = false;
         {
             if (movement.z > 0)
             {
-                // Fadeout from Positive
                 movement.z -= LossPerSecond * Time.deltaTime;
                 if (movement.z < 0) movement.z = 0;
             }
             else if (movement.z < 0)
             {
-                // Fadeout from Negative
                 movement.z += LossPerSecond * Time.deltaTime;
                 if (movement.z > 0) movement.z = 0;
             }
@@ -204,7 +188,6 @@ private bool hasBall = false;
 
         if (movement.x != 0 || movement.z != 0)
         {
-            // Only move when necessary
             movingPoint.Move(movement * Time.deltaTime);
             rotationPoint.rotation = Quaternion.Slerp(
                 rotationPoint.rotation,
@@ -213,6 +196,7 @@ private bool hasBall = false;
             );
         }
     }
+    // Metode til at håndtere AI-styret bevægelse.
 private void AIMovement()
     {
         if (ballTransform != null && !ballScript.isGrabbed)
@@ -228,7 +212,8 @@ private void AIMovement()
         }
     }
 
-    private void ManualMovement()
+      // Metode til at håndtere manuel bevægelse via tastatur eller lignende input.
+  private void ManualMovement()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -242,7 +227,8 @@ private void AIMovement()
         }
     }
 
-    private void HandleBallInteraction()
+       // Metode til at håndtere interaktion med bolden.
+ private void HandleBallInteraction()
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -255,7 +241,8 @@ private void AIMovement()
         }
     }
 
-    private void TryGrabBall()
+        // Metode til at forsøge at gribe bolden, hvis den er inden for rækkevidde.
+private void TryGrabBall()
     {
         if (ballScript != null && !ballScript.isGrabbed && Vector3.Distance(ballScript.transform.position, transform.position) <= 2.0f)
         {
@@ -264,7 +251,8 @@ private void AIMovement()
         }
     }
 
-    private void ReleaseBall()
+        // Metode til at frigive bolden med en bestemt kraft og retning.
+private void ReleaseBall()
     {
         if (hasBall)
         {
@@ -274,7 +262,8 @@ private void AIMovement()
         }
     }
 
-    private void UpdateRotation()
+        // Metode til at opdatere spillerens rotation baseret på bevægelsesretningen.
+private void UpdateRotation()
     {
         rotationPoint.rotation = Quaternion.Slerp(
             rotationPoint.rotation,
@@ -283,7 +272,8 @@ private void AIMovement()
         );
     }
 
-    void LateUpdate()
+        // Metode kaldt sent i hver opdateringsramme (frame) til at justere Y-positionen.
+void LateUpdate()
     {
         Vector3 newPosition = movingPoint.transform.position;
         newPosition.y = fixedYPosition;

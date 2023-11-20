@@ -11,10 +11,19 @@ public class GameManager : MonoBehaviour
     private GameObject[] enemies;
     private GameObject[] aiPlayers;
 
+       public AudioClip goalScoredSound;
+    private AudioSource audioSource;
+
 
     void Start()
     {
-        // Store the ball's initial position and rotation
+
+          audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+        // Hent eller tilføj en AudioSource til GameManager, hvis den ikke allerede er tilføjet.
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         if (ball != null)
         {
@@ -22,38 +31,36 @@ public class GameManager : MonoBehaviour
             ballStartRotation = ball.transform.rotation;
         }
 
-        // Store the initial positions and rotations of players
         players = GameObject.FindGameObjectsWithTag("Player");
-        // Assume 'Player' tag is used for all player objects
 
-        // Store the initial positions and rotations of enemies
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        // Assume 'Enemy' tag is used for all enemy objects
 
-            // Store the initial positions and rotations of AI players
         aiPlayers = GameObject.FindGameObjectsWithTag("AIPlayer");
     }
 
-      public void GoalScored(string scoringTeam)
+     // Metode kaldt når et mål scores. Den modtager en parameter, der angiver hvilket hold der scorede.
+ public void GoalScored(string scoringTeam)
     {
         if (scoringTeam == "TeamA")
         {
             scoreTeamA++;
-            Debug.Log("Score Team A: " + scoreTeamA); // Log only when the score changes
+            Debug.Log("Score Team A: " + scoreTeamA);
         }
         else if (scoringTeam == "TeamB")
         {
             scoreTeamB++;
-            Debug.Log("Score Team B: " + scoreTeamB); // Log only when the score changes
+            Debug.Log("Score Team B: " + scoreTeamB);
         }
 
-        // Reset positions after a goal is scored
+        // Play the sound effect
+        audioSource.PlayOneShot(goalScoredSound);
+
         ResetPositions();
     }
 
+    // Metode til at nulstille positionerne for bolden og spillerne/fjenderne.
 private void ResetPositions()
 {
-    // Reset the ball
     GameObject ball = GameObject.FindGameObjectWithTag("Ball");
     if (ball != null)
     {
@@ -68,7 +75,6 @@ private void ResetPositions()
         Debug.Log("Ball reset to position: " + ball.transform.position);
     }
 
-    // Reset players
     Debug.Log("Resetting players to their starting positions.");
     foreach (var player in players)
     {
@@ -84,7 +90,6 @@ private void ResetPositions()
         }
     }
 
-    // Reset enemies
     Debug.Log("Resetting enemies to their starting positions.");
     foreach (var enemy in enemies)
     {
@@ -99,7 +104,6 @@ private void ResetPositions()
             Debug.Log($"Enemy script not found on {enemy.name}");
         }
     }
-        // Reset AI players
     foreach (var aiPlayer in aiPlayers)
     {
         var aiPlayerScript = aiPlayer.GetComponent<AIPlayer>();
@@ -114,15 +118,12 @@ private void ResetPositions()
     }
 }
 
-
-    // Update is called once per frame
 void Update()
 {
-    if (Input.GetKeyDown(KeyCode.R)) // Press 'R' to reset the player's position for testing
+    if (Input.GetKeyDown(KeyCode.R))  // Hvis 'R'-tasten trykkes, nulstil spillerpositionerne til testformål.
+
     {
         ResetPositions();
     }
-
-    // Rest of your update logic...
 }
 }

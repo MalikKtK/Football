@@ -5,30 +5,32 @@ public class Ball : MonoBehaviour
 {
 
     public bool isGrabbed = false; 
-private Transform grabberTransform; // The transform of the player/AI grabbing the ball
+private Transform grabberTransform;
 
 
+    // Metode kaldet når bolden grebes.
     public void Grab(Transform grabber)
     {
         isGrabbed = true;
         grabberTransform = grabber;
-        rb.isKinematic = true; // Disable physics
+        rb.isKinematic = true;
     }
 
-    public void Release(Vector3 direction, float force)
+      // Metode kaldet når bolden slippes.
+  public void Release(Vector3 direction, float force)
     {
         isGrabbed = false;
-        grabberTransform = null; // Clear the grabber reference
-        rb.isKinematic = false; // Re-enable physics
-        rb.AddForce(direction * force, ForceMode.VelocityChange); // Add force to throw the ball
+        grabberTransform = null;
+        rb.isKinematic = false;
+        rb.AddForce(direction * force, ForceMode.VelocityChange);
     }
 
-   void Update()
+    // Metode kaldet i hver opdateringsramme (frame) når bolden er grebet.
+  void Update()
     {
         if (isGrabbed)
         {
-            // Make the ball follow the grabber's position
-            transform.position = grabberTransform.position + grabberTransform.forward * 0.5f; // Adjust this offset as needed
+            transform.position = grabberTransform.position + grabberTransform.forward * 0.5f;
         }
     }
     public float initialSpeed = 5f;
@@ -41,14 +43,21 @@ private Transform grabberTransform; // The transform of the player/AI grabbing t
         KickOff();
     }
 
+    // Metode til at sparke bolden ved start.
     void KickOff()
     {
-        // Give the ball an initial forward force
         rb.velocity = transform.forward * initialSpeed;
     }
 
-    void OnCollisionEnter(Collision collision)
+       // Metode kaldt når bolden kolliderer med noget.
+        void OnCollisionEnter(Collision collision)
     {
-        // You can add additional collision handling logic here if needed
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("AIPlayer"))
+        {
+            Vector3 direction = (collision.transform.position - transform.position).normalized;
+            direction.y = 0;
+
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(direction * 5f, ForceMode.VelocityChange);
+        }
     }
 }
